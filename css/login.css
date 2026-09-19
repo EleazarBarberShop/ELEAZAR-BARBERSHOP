@@ -1,3 +1,5 @@
+/* Update to css/login.css */
+
 .login-container {
     display: flex;
     flex-direction: column;
@@ -5,52 +7,57 @@
     align-items: center;
     height: 100vh;
     padding: 20px;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../assets/images/1000439163.jpg') center/cover;
+    
+    /* Applies a dark radial gradient over the background image */
+    background: 
+        radial-gradient(circle at center, rgba(17, 17, 17, 0.6) 0%, rgba(17, 17, 17, 0.95) 100%),
+        url('../assets/images/barber.jpg') center/cover no-repeat;
 }
 
 .brand-showcase {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+    /* Mimics the 3D lettering of the physical sign */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 .brand-showcase h1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
+    font-size: 3rem; /* Make it bold and imposing */
+    font-weight: 900;
+    color: var(--brand-white);
+    letter-spacing: 3px;
+    text-transform: uppercase;
     margin-bottom: 10px;
 }
 
+.brand-showcase p {
+    color: var(--wall-gray);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
 .brand-showcase .hours {
-    color: var(--accent);
+    color: var(--pole-red); /* Highlight the hours in the pole red */
+    font-weight: bold;
     margin-top: 5px;
 }
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 350px;
-    gap: 15px;
-}
-
-.login-form input {
-    padding: 15px;
-    border-radius: 5px;
-    border: 1px solid #333;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 1rem;
-}
-
 .primary-btn {
-    padding: 15px;
-    background-color: var(--accent);
-    color: #000;
+    padding: 16px 40px;
+    background-color: var(--pole-red);
+    color: var(--brand-white);
     font-weight: bold;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    transition: opacity 0.2s;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(209, 35, 42, 0.4);
+    transition: all 0.3s ease;
 }
 
-.primary-btn:active {
-    opacity: 0.8;
+.primary-btn:hover, .primary-btn:active {
+    background-color: var(--pole-blue);
+    box-shadow: 0 4px 15px rgba(33, 68, 140, 0.4);
+    transform: translateY(-2px);
 }
