@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('beta-login-form');
+    const loginBtn = document.getElementById('login-btn');
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent page reload
-        
-        // In Alpha, this is where you will send credentials to your backend.
-        // For Beta, we simply route the user to the services page.
+    loginBtn.addEventListener('click', () => {
+        // Direct routing to the services catalog for Beta
         window.location.href = 'services.html';
     });
 });
