@@ -76,3 +76,27 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* Top Navigation & Back Button Styles */
+.top-nav {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 0;
+    transition: color 0.2s;
+}
+
+.back-btn:active, .back-btn:hover {
+    color: var(--text-primary);
+}
