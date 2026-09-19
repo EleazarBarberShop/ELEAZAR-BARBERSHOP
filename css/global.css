@@ -1,10 +1,16 @@
 :root {
-    --bg-color: #121212;
+    --bg-color: #121212; 
+    --brand-black: #111111;
+    --brand-white: #f8f9fa;
+    --pole-red: #D1232A;    
+    --pole-blue: #21448C;   
+    --wall-gray: #8a8d91;
     --card-bg: #1e1e1e;
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
     --accent: #d4af37; /* Gold accent */
     --font-stack: 'Helvetica Neue', Arial, sans-serif;
+    */
 }
 
 * {
