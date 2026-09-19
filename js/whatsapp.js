@@ -4,7 +4,8 @@
  * @returns {string} The fully encoded wa.me URL.
  */
 function generateWhatsAppLink(serviceName) {
-    const phoneNumber = "254732289268";
+    // Updated to the new number with the 254 country code
+    const phoneNumber = "254710247959"; 
     
     // Construct the multiline template string
     const message = `Hello 👋, I would like to book an appointment.\n\nI want to get a ${serviceName}\n\nPlease let me know when you are available. Thanks!`;
