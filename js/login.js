@@ -1,42 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('login-btn');
     const installBtn = document.getElementById('install-btn');
-    let deferredPrompt;
+    const iosModal = document.getElementById('ios-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    
+    let deferredPrompt = null;
 
-    // 1. Navigation Logic
+    // 1. Navigation Flow
     loginBtn.addEventListener('click', () => {
         window.location.href = 'services.html';
     });
 
-    // 2. Intercept the PWA install prompt
+    // 2. Intercept install prompt for Android/Chrome
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent the mini-infobar from appearing on mobile
         e.preventDefault();
-        // Stash the event so it can be triggered later.
         deferredPrompt = e;
-        // Update UI notify the user they can install the PWA
-        installBtn.hidden = false;
     });
 
-    // 3. Handle the Install Button click
+    // 3. Platform Detection Helpers
+    const isIos = () => {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        return /iphone|ipad|ipod/.test(userAgent);
+    };
+
+    const isInStandaloneMode = () => {
+        return ('standalone' in window.navigator) && (window.navigator.standalone) || 
+               window.matchMedia('(display-mode: standalone)').matches;
+    };
+
+    // If the app is already opened in standalone installed mode, hide the download button
+    if (isInStandaloneMode()) {
+        installBtn.style.display = 'none';
+    }
+
+    // 4. Handle Install Button Click
     installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) {
-            return;
+        if (deferredPrompt) {
+            // Android / Desktop Chromium native prompt
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        } else if (isIos()) {
+            // iOS manual installation guide
+            iosModal.style.display = 'flex';
+        } else {
+            // Fallback for browsers that already installed it or don't support programmatic install
+            alert("To install this app, tap your browser's menu (three dots) and select 'Install app' or 'Add to Home screen'.");
         }
-        
-        // Show the native install prompt
-        deferredPrompt.prompt();
-        
-        // Wait for the user to respond to the prompt
-        const { outcome } = await deferredPrompt.userChoice;
-        
-        // Optionally log the outcome
-        console.log(`User response to the install prompt: ${outcome}`);
-        
-        // We've used the prompt, and can't use it again, throw it away
-        deferredPrompt = null;
-        
-        // Hide the button regardless of outcome
-        installBtn.hidden = true;
+    });
+
+    // Close iOS Modal
+    closeModalBtn.addEventListener('click', () => {
+        iosModal.style.display = 'none';
     });
 });
