@@ -25,7 +25,35 @@
 
     <!-- JS will dynamically inject the categories and cards here -->
     <main id="catalog-container" class="services-wrapper"></main>
-
+<!-- New Booking Modal (Hidden by default) -->
+    <div id="booking-modal" class="modal-overlay" hidden>
+        <div class="modal-card">
+            <h3 id="modal-service-title">Book Service</h3>
+            
+            <div class="form-group">
+                <label for="day-select">Preferred Day:</label>
+                <select id="day-select" class="custom-select">
+                    <option value="Today">Today</option>
+                    <option value="Tomorrow">Tomorrow</option>
+                    <option value="Later this week">Later this week</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="time-select">Preferred Time:</label>
+                <select id="time-select" class="custom-select">
+                    <option value="Morning">Morning (10AM - 12PM)</option>
+                    <option value="Afternoon">Afternoon (12PM - 4PM)</option>
+                    <option value="Evening">Evening (4PM - 9PM)</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button id="cancel-booking" class="cancel-btn">Cancel</button>
+                <button id="confirm-booking" class="primary-btn">Continue to WhatsApp</button>
+            </div>
+        </div>
+    </div>
     <!-- Utility loaded first, then the renderer -->
     <script src="js/whatsapp.js"></script>
     <script src="js/services.js"></script>
