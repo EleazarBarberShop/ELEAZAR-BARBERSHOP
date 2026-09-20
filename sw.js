@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mui-barber-beta-v1';
+const CACHE_NAME = 'mui-barber-beta-v2';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -13,43 +13,70 @@ const ASSETS_TO_CACHE = [
     './assets/images/man.png'
 ];
 
-// Install Event: Cache all critical assets
+// 1. Install Event: Cache critical assets
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('Opened cache');
+                console.log('[Service Worker] Caching all assets');
                 return cache.addAll(ASSETS_TO_CACHE);
             })
+            .then(() => self.skipWaiting()) // Forces the waiting service worker to become the active service worker
     );
 });
 
-// Fetch Event: Serve from cache if available, otherwise fetch from network
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Return cached response if found
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
-            })
-    );
-});
-
-// Activate Event: Clean up old caches when a new version is pushed
+// 2. Activate Event: Clean up old caches
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('Deleting old cache:', cacheName);
+                        console.log('[Service Worker] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
+        }).then(() => self.clients.claim()) // Takes control of all open pages immediately
+    );
+});
+
+// 3. Fetch Event: Dynamic Caching Strategies
+self.addEventListener('fetch', (event) => {
+    // Strategy A: Network-First for HTML Navigation
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request)
+                .then((networkResponse) => {
+                    // Network successful, clone response and update cache
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, networkResponse.clone());
+                        return networkResponse;
+                    });
+                })
+                .catch(() => {
+                    // Network failed (offline), serve from cache
+                    return caches.match(event.request);
+                })
+        );
+        return;
+    }
+
+    // Strategy B: Stale-While-Revalidate for Static Assets (CSS, JS, Images)
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            // Initiate the background fetch to update the cache
+            const fetchPromise = fetch(event.request).then((networkResponse) => {
+                caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, networkResponse.clone());
+                });
+                return networkResponse;
+            }).catch(() => {
+                // Silently fail if offline, the cached response will suffice
+            });
+
+            // Immediately return the cached response if we have it, otherwise wait for the network
+            return cachedResponse || fetchPromise;
         })
     );
 });
