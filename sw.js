@@ -62,21 +62,30 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Strategy B: Stale-While-Revalidate for Static Assets (CSS, JS, Images)
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            // Initiate the background fetch to update the cache
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, networkResponse.clone());
-                });
+  // Strategy B: Stale-While-Revalidate for Static Assets (CSS, JS, Images)
+event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+        const fetchPromise = fetch(event.request).then((networkResponse) => {
+            // 1. Verify the response is valid before attempting to cache
+            if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
                 return networkResponse;
-            }).catch(() => {
-                // Silently fail if offline, the cached response will suffice
+            }
+
+            // 2. Clone the response synchronously BEFORE passing it to the async cache operation
+            const responseToCache = networkResponse.clone();
+
+            caches.open(CACHE_NAME).then((cache) => {
+                // 3. Put the cloned response into the cache
+                cache.put(event.request, responseToCache);
             });
 
-            // Immediately return the cached response if we have it, otherwise wait for the network
-            return cachedResponse || fetchPromise;
-        })
-    );
-});
+            return networkResponse;
+        }).catch(() => {
+            // 4. Fallback gracefully to the cached response if the network fails (offline)
+            return cachedResponse;
+        });
+
+        // 5. Return the cached response immediately if it exists, otherwise wait for the fetch
+        return cachedResponse || fetchPromise;
+    })
+);
