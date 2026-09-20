@@ -22,8 +22,19 @@
         
         <!-- Simplified Entry Button -->
         <button id="login-btn" class="primary-btn">Log In</button>
-        <button id="install-btn" class="secondary-btn" hidden>Install App</button>
+        <button id="install-btn" class="secondary-btn">📲 Download App</button>
     </main>
+
+   <!-- iOS Step-by-Step Instructions Modal -->
+    <div id="ios-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <h3>Install on iPhone / iPad</h3>
+            <p>1. Tap the <strong>Share</strong> icon (square with an arrow) in Safari's bottom menu.</p>
+            <p>2. Scroll down and tap <strong>Add to Home Screen</strong>.</p>
+            <p>3. Tap <strong>Add</strong> in the top-right corner.</p>
+            <button id="close-modal-btn" class="primary-btn" style="margin-top: 15px; width: 100%;">Got it</button>
+        </div>
+    </div> 
 
     <script src="js/login.js"></script>
 
