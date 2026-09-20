@@ -29,6 +29,14 @@ const serviceCatalog = {
 
 document.addEventListener('DOMContentLoaded', () => {
     const catalogContainer = document.getElementById('catalog-container');
+    const modal = document.getElementById('booking-modal');
+    const confirmBtn = document.getElementById('confirm-booking');
+    const cancelBtn = document.getElementById('cancel-booking');
+    const serviceTitle = document.getElementById('modal-service-title');
+    const daySelect = document.getElementById('day-select');
+    const timeSelect = document.getElementById('time-select');
+    
+    let activeService = '';
 
     // 1. Render UI
     for (const key in serviceCatalog) {
@@ -60,13 +68,33 @@ document.addEventListener('DOMContentLoaded', () => {
         catalogContainer.appendChild(section);
     }
     
-    // 2. Attach WhatsApp Routing Listeners
     const buttons = document.querySelectorAll('.book-btn');
     buttons.forEach(button => {
         button.addEventListener('click', (e) => {
-            const serviceName = e.target.getAttribute('data-service');
-            const url = generateWhatsAppLink(serviceName);
-            window.open(url, '_blank');
+            activeService = e.target.getAttribute('data-service');
+            // Update modal title and reveal it
+            serviceTitle.innerText = `Book: ${activeService}`;
+            modal.hidden = false;
         });
     });
+
+    // Handle Modal Cancellation
+    cancelBtn.addEventListener('click', () => {
+        modal.hidden = true;
+        activeService = ''; // Reset
+    });
+
+    // Handle Modal Confirmation
+    confirmBtn.addEventListener('click', () => {
+        const selectedDay = daySelect.value;
+        const selectedTime = timeSelect.value;
+        
+        // Pass the extra parameters to the routing utility
+        const url = generateWhatsAppLink(activeService, selectedDay, selectedTime);
+        
+        // Hide modal and route to WhatsApp
+        modal.hidden = true;
+        window.open(url, '_blank');
+    });
+});
 });
