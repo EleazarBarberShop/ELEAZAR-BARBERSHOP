@@ -1,8 +1,9 @@
-const CACHE_NAME = 'mui-barber-beta-v2';
+const CACHE_NAME = 'mui-barber-beta-v3';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
     './services.html',
+    './offline.html',
     './css/global.css',
     './css/login.css',
     './css/services.css',
@@ -41,22 +42,23 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// 3. Fetch Event: Dynamic Caching Strategies
+// 3. Fetch Event
 self.addEventListener('fetch', (event) => {
     // Strategy A: Network-First for HTML Navigation
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request)
                 .then((networkResponse) => {
-                    // Network successful, clone response and update cache
                     return caches.open(CACHE_NAME).then((cache) => {
                         cache.put(event.request, networkResponse.clone());
                         return networkResponse;
                     });
                 })
                 .catch(() => {
-                    // Network failed (offline), serve from cache
-                    return caches.match(event.request);
+                    return caches.match(event.request).then((cachedResponse) => {
+                        // Return cached page if available, OTHERWISE return the offline.html fallback
+                        return cachedResponse || caches.match('./offline.html');
+                    });
                 })
         );
         return;
