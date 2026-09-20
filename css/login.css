@@ -7,11 +7,15 @@
     align-items: center;
     height: 100vh;
     padding: 20px;
+    background-color: #111111;
     
     /* Applies a dark radial gradient over the background image */
     background: 
         radial-gradient(circle at center, rgba(17, 17, 17, 0.6) 0%, rgba(17, 17, 17, 0.95) 100%),
-        url('../assets/images/barber.jpg') center/cover no-repeat;
+        url('../assets/images/barber.webp') center/cover no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .brand-showcase {
