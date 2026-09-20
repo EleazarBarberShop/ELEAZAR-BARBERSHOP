@@ -65,3 +65,29 @@
     box-shadow: 0 4px 15px rgba(33, 68, 140, 0.4);
     transform: translateY(-2px);
 }
+
+/* Add to the bottom of css/login.css */
+
+.secondary-btn {
+    margin-top: 15px;
+    padding: 12px 30px;
+    background-color: transparent;
+    color: var(--brand-white);
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 2px solid var(--pole-red);
+    transition: all 0.3s ease;
+}
+
+.secondary-btn:hover, .secondary-btn:active {
+    background-color: rgba(209, 35, 42, 0.2);
+    border-color: var(--pole-blue);
+}
+
+/* Ensure the hidden attribute works cleanly */
+[hidden] {
+    display: none !important;
+}
