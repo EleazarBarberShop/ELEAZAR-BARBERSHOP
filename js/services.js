@@ -1,3 +1,4 @@
+// 1. Data Payload
 const serviceCatalog = {
     hair: {
         categoryTitle: "Hair",
@@ -27,6 +28,7 @@ const serviceCatalog = {
     }
 };
 
+// 2. Core App Logic
 document.addEventListener('DOMContentLoaded', () => {
     const catalogContainer = document.getElementById('catalog-container');
     const modal = document.getElementById('booking-modal');
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let activeService = '';
 
-    // 1. Render UI
+    // A. Render UI dynamically from the catalog
     for (const key in serviceCatalog) {
         const category = serviceCatalog[key];
         
@@ -67,34 +69,32 @@ document.addEventListener('DOMContentLoaded', () => {
         section.appendChild(cardContainer);
         catalogContainer.appendChild(section);
     }
-    
+
+    // B. Attach Modal Open Listeners to the newly created buttons
     const buttons = document.querySelectorAll('.book-btn');
     buttons.forEach(button => {
         button.addEventListener('click', (e) => {
             activeService = e.target.getAttribute('data-service');
-            // Update modal title and reveal it
             serviceTitle.innerText = `Book: ${activeService}`;
             modal.hidden = false;
         });
     });
 
-    // Handle Modal Cancellation
+    // C. Handle Modal Cancellation
     cancelBtn.addEventListener('click', () => {
         modal.hidden = true;
-        activeService = ''; // Reset
+        activeService = ''; 
     });
 
-    // Handle Modal Confirmation
+    // D. Handle Modal Confirmation & Routing
     confirmBtn.addEventListener('click', () => {
         const selectedDay = daySelect.value;
         const selectedTime = timeSelect.value;
         
-        // Pass the extra parameters to the routing utility
+        // Requires whatsapp.js to be loaded first in services.html
         const url = generateWhatsAppLink(activeService, selectedDay, selectedTime);
         
-        // Hide modal and route to WhatsApp
         modal.hidden = true;
         window.open(url, '_blank');
     });
-});
 });
