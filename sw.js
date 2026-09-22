@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mui-barber-beta-v3';
+const CACHE_NAME = 'eleazar-barber-v4';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -11,7 +11,7 @@ const ASSETS_TO_CACHE = [
     './js/services.js',
     './js/whatsapp.js',
     './assets/images/barber.webp',
-    './assets/images/man.png'
+    './assets/images/logo.webp'
 ];
 
 // 1. Install Event: Cache critical assets
