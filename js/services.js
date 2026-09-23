@@ -1,29 +1,72 @@
 // 1. Data Payload
 const serviceCatalog = {
-    hair: {
-        categoryTitle: "Hair",
+    barber: {
+        categoryTitle: "Barber Services",
         items: [
-            { name: "Gentleman's Cut", duration: "45 mins" },
-            { name: "Line Up & Beard Trim", duration: "30 mins" },
-            { name: "Ladies Fresh Cut", duration: "45 mins" },
-            { name: "Colour ReTouch & Texturizing", duration: "1 hr" },
-            { name: "Kids Fades Cut", duration: "60 mins" }
+            { name: "Afro Haircut", price: "KSh 400" },
+            { name: "Caucasian Haircut", price: "KSh 500" },
+            { name: "Haircut + Dye", price: "KSh 700" },
+            { name: "Haircut + Blowout", price: "KSh 700" },
+            { name: "Kids Haircut", price: "KSh 200" },
+            { name: "Face Scrub", price: "KSh 300" },
+            { name: "Eyebrows", price: "KSh 200" },
+            { name: "Hair Colour", price: "KSh 1500" },
+            { name: "Haircut + Flat Iron", price: "KSh 1000" }
         ]
     },
-    massage: {
-        categoryTitle: "Massage",
+    nails: {
+        categoryTitle: "Nail Services",
         items: [
-            { name: "Classic Massage", duration: "60 mins" },
-            { name: "Scalp & Neck", duration: "15 mins" },
-            { name: "Face Steaming & Scrubbing", duration: "40 mins" }
+            { name: "Gel", price: "KSh 500 (Negotiable)" },
+            { name: "Builder Gel", price: "KSh 1000" },
+            { name: "Extensions", price: "KSh 1200 - 1500 (Negotiable)" },
+            { name: "Tips & Gel", price: "KSh 1000 (+ Art)" },
+            { name: "Gum Gel", price: "KSh 1500 - 2000 (Art incl.)" },
+            { name: "Acrylic", price: "KSh 2000 - 3000 (Negotiable)" },
+            { name: "Pedicure & Gel", price: "KSh 1000 - 1200 (Negotiable)" },
+            { name: "Cutex", price: "KSh 150" },
+            { name: "Pre Pedicure", price: "KSh 400" },
+            { name: "Pre Manicure", price: "KSh 300" },
+            { name: "Mani Removal", price: "KSh 250" },
+            { name: "Pedi Removal", price: "KSh 300" }
         ]
     },
     dreadlocks: {
-        categoryTitle: "DreadLocks",
+        categoryTitle: "Dreadlocks Services",
         items: [
-            { name: "Retouch/Repair", duration: "50 mins" },
-            { name: "Artificial Locs", duration: "1 hr 40 mins" },
-            { name: "Human Hair Extensions", duration: "2 hrs" }
+            { name: "Locks Retouch", price: "KSh 700" },
+            { name: "Locks Styling", price: "KSh 200" },
+            { name: "Fresh Locks", price: "KSh 2500 (Start)" },
+            { name: "Artificial Locks", price: "KSh 4500 (Start)" },
+            { name: "Sisterlocks Retouch", price: "KSh 2000" },
+            { name: "Fresh Sisterlocks", price: "KSh 10,000 (Depends)" },
+            { name: "Extensions Locks", price: "KSh 1500" },
+            { name: "Locks Dye", price: "KSh 700" },
+            { name: "Locks Colours", price: "KSh 1000 (Depends)" },
+            { name: "Sisterlock Dye", price: "KSh 700" },
+            { name: "Sister Lock Colours", price: "KSh 1500 (Depends)" },
+            { name: "Locks Treatment", price: "KSh 1200" }
+        ]
+    },
+    caucasian: {
+        categoryTitle: "Caucasian Hair",
+        items: [
+            { name: "Perm Rods", price: "KSh 1500" },
+            { name: "Blowdry", price: "KSh 500" },
+            { name: "Shingle", price: "KSh 1300" },
+            { name: "Blowouts", price: "KSh 1000" },
+            { name: "Color", price: "KSh 1000" },
+            { name: "Highlights", price: "KSh 1500" },
+            { name: "Highlights Foils", price: "KSh 2000" },
+            { name: "Tonas", price: "KSh 1200" },
+            { name: "Finger Coils", price: "KSh 1500" },
+            { name: "Flat Iron", price: "KSh 700" },
+            { name: "Low Lights", price: "KSh 2000" },
+            { name: "Balayage / HL", price: "KSh 3500" },
+            { name: "Weave / Wig (Full Bond)", price: "KSh 1300" },
+            { name: "Weave / Wig Bob", price: "KSh 1000" },
+            { name: "Texturizing Wig", price: "KSh 1000" },
+            { name: "Stain Set", price: "KSh 1500" }
         ]
     }
 };
@@ -39,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeSelect = document.getElementById('time-select');
     
     let activeService = '';
+    let activePrice = '';
 
     // A. Render UI dynamically from the catalog
     for (const key in serviceCatalog) {
@@ -58,9 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="card-content">
                     <h3>${service.name}</h3>
-                    <p class="duration">⏱ ${service.duration}</p>
+                    <p class="price-tag">🏷️ ${service.price}</p>
                 </div>
-                <button class="book-btn" data-service="${service.name}">Book Now</button>
+                <button class="book-btn" data-service="${service.name}" data-price="${service.price}">Book Now</button>
             `;
             
             cardContainer.appendChild(card);
@@ -70,11 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
         catalogContainer.appendChild(section);
     }
 
-    // B. Attach Modal Open Listeners to the newly created buttons
+    // B. Attach Modal Open Listeners
     const buttons = document.querySelectorAll('.book-btn');
     buttons.forEach(button => {
         button.addEventListener('click', (e) => {
             activeService = e.target.getAttribute('data-service');
+            activePrice = e.target.getAttribute('data-price');
             serviceTitle.innerText = `Book: ${activeService}`;
             modal.hidden = false;
         });
@@ -84,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelBtn.addEventListener('click', () => {
         modal.hidden = true;
         activeService = ''; 
+        activePrice = '';
     });
 
     // D. Handle Modal Confirmation & Routing
@@ -91,8 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedDay = daySelect.value;
         const selectedTime = timeSelect.value;
         
-        // Requires whatsapp.js to be loaded first in services.html
-        const url = generateWhatsAppLink(activeService, selectedDay, selectedTime);
+        const url = generateWhatsAppLink(activeService, activePrice, selectedDay, selectedTime);
         
         modal.hidden = true;
         window.open(url, '_blank');
