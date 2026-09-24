@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eleazar-barber-v4';
+const CACHE_NAME = 'eleazar-barber-v5';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
